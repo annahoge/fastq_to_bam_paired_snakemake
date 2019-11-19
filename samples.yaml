@@ -1,0 +1,9 @@
+#samples.yaml for fastq_to_bam_paired.snakefile
+#Anna Hoge
+#Template made October 18th, 2019
+#Ha Lab
+#Fred Hutchinson Cancer Research Center
+
+samples: #format is [read1.fq.gz, read2.fq.gz]
+  name1: [name1_read1.fq.gz, name1_read2.fq.gz]
+  name2: [name2_read1.fq.gz, name2_read2.fq.gz]

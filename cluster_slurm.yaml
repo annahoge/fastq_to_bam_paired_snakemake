@@ -1,0 +1,36 @@
+#cluster_slurm.yaml for fastq_to_bam_paired.snakefile
+#Anna Hoge
+#Template made October 18th, 2019
+#Ha Lab
+#Fred Hutchinson Cancer Research Center
+
+__default__:
+    partition: campus
+    time: "24:0:0"
+    mem: 4G
+    ncpus: 1
+    ntasks: 1
+    output: logs/cluster/{rule}.%A.out
+
+map_to_reference:
+    time: "48:0:0"
+    mem: 12G
+    ncpus: 4
+
+sort_by_coord:
+    mem: 8G
+
+mark_dups:
+    partition: largenode
+    mem: 72G
+    ncpus: 6
+
+build_recalibrator_model:
+    mem: 8G
+
+apply_recalibration:
+    time: "48:0:0"
+    mem: 8G
+
+rename_index_files:
+    time: "1:0:0"
