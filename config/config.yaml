@@ -28,6 +28,7 @@ is_wgs: True
 base_recalibrator_gap_open_penalty: 40.0
 
 #can adjust the number of threads used for bwa based on the data
+#suggested this matches cluster_slurm.yaml ncpus for map_to_reference rule
 bwa_threads: 4
 
 #tools used.  need to be module loaded first.  see snakemake file for loads
