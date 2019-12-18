@@ -19,6 +19,10 @@ known_polymorphic_sites2:
     /fh/fast/ha_g/grp/reference/GRCh38/known_polymorphic_sites/Mills_and_1000G_gold_standard.indels.hg38.vcf.gz
     #/fh/fast/ha_g/grp/reference/GRCh37/known_polymorphic_sites/Mills_and_1000G_gold_standard.indels.b37.vcf.gz
 
+#SELECT IF DATA IS WHOLE GENOME SEQUENCES OR NOT (True or False)
+#determines if rule get_wgs_metrics is run
+is_wgs: True
+
 #SELECT CORRECT BASE RECALIBRATOR GAP OPEN PENALTY
 #GATK recommends 40 for exomes and 30 for whole genomes
 base_recalibrator_gap_open_penalty: 40.0
