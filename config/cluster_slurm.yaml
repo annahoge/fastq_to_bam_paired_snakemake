@@ -34,3 +34,7 @@ apply_recalibration:
 
 rename_index_files:
     time: "1:0:0"
+
+#get_alignment_metrics:
+
+#get_wgs_metrics:
