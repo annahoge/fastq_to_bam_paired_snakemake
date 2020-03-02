@@ -142,7 +142,9 @@ rule get_alignment_metrics:
     output:
         protected("results/{samples}/{samples}_alignment_summary_metrics.txt")
     params:
-        reference_genome=config["reference_genome"]
+        reference_genome=config["reference_genome"],
+        java=config["java"],
+        picard_jar=config["picard_jar"]
     log:
         "logs/aligment_metrics/{samples}_get_alignment_metrics.txt"
     shell:
@@ -159,7 +161,9 @@ rule get_wgs_metrics:
         protected("results/{samples}/{samples}_wgs_metrics.txt")
     params:
         reference_genome=config["reference_genome"],
-        is_wgs=config["is_wgs"]
+        is_wgs=config["is_wgs"],
+        java=config["java"],
+        picard_jar=config["picard_jar"]
     log:
         "logs/wgs_metrics/{samples}_get_wgs_metrics.txt"
     run:
