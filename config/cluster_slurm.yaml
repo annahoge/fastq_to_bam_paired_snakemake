@@ -37,3 +37,6 @@ rename_index_files:
 #get_alignment_metrics:
 
 #get_wgs_metrics:
+
+#get_insert_size_metrics:
+
