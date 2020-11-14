@@ -30,7 +30,7 @@ rule all:
         expand("results/{samples}/{samples}_alignment_summary_metrics.txt", samples=config["samples"]),
         expand("results/{samples}/{samples}_wgs_metrics.txt", samples=config["samples"]),
         expand("results/{samples}/{samples}_insert_size_metrics.txt", samples=config["samples"]),
-        expand("results/{samples}/{samples}_insert_size_metrics.pdf", samples=config["samples"])
+        expand("results/{samples}/{samples}_insert_size_histogram.pdf", samples=config["samples"])
 
 rule map_to_reference:
     input:
@@ -185,7 +185,7 @@ rule get_insert_size_metrics:
         "results/{samples}/{samples}_recalibrated.bam"
     output:
         insert_size_txt = protected("results/{samples}/{samples}_insert_size_metrics.txt"),
-        insert_size_pdf = protected("results/{samples}/{samples}_insert_size_metrics.pdf")
+        insert_size_pdf = protected("results/{samples}/{samples}_insert_size_histogram.pdf")
     params:
         java=config["java"],
         picard_jar=config["picard_jar"]
