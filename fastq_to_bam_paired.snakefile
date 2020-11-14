@@ -6,15 +6,16 @@
 
 """
 #before running snakemake, do in tmux terminal:
-ml snakemake/5.2.4-foss-2016b-Python-3.6.6
-ml BWA/0.7.17-foss-2016b
-ml SAMtools/1.9-foss-2016b
-ml java/jdk1.8.0_31
-ml GATK/4.1.0.0-foss-2016b-Python-3.6.6
+ml snakemake/5.19.2-foss-2019b-Python-3.7.4
+ml BWA/0.7.17-GCC-8.3.0
+ml SAMtools/1.10-GCCcore-8.3.0
 ml picard/2.18.29-Java
+ml Java/11.0.2
+ml GATK/4.1.8.1-GCCcore-8.3.0-Java-11
+ml R/3.6.2-foss-2019b-fh1
 
 #command to run snakemake (remove -np at end when done validating):
-snakemake -s fastq_to_bam_paired.snakefile --latency-wait 60 --restart-times 3 --keep-going --cluster-config config/cluster_slurm.yaml --cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus} -n {cluster.ntasks} -o {cluster.output}" -j 100 -np
+snakemake -s fastq_to_bam_paired.snakefile --latency-wait 60 --restart-times 2 --keep-going --cluster-config config/cluster_slurm.yaml --cluster "sbatch -p {cluster.partition} --mem={cluster.mem} -t {cluster.time} -c {cluster.ncpus} -n {cluster.ntasks} -o {cluster.output}" -j 100 -np
 """
 
 configfile: "config/samples.yaml"
@@ -27,7 +28,9 @@ rule all:
         expand("results/{samples}/{samples}_recalibrated.bam", samples=config["samples"]),
         expand("results/{samples}/{samples}_recalibrated.bam.bai", samples=config["samples"]),
         expand("results/{samples}/{samples}_alignment_summary_metrics.txt", samples=config["samples"]),
-        expand("results/{samples}/{samples}_wgs_metrics.txt", samples=config["samples"])
+        expand("results/{samples}/{samples}_wgs_metrics.txt", samples=config["samples"]),
+        expand("results/{samples}/{samples}_insert_size_metrics.txt", samples=config["samples"]),
+        expand("results/{samples}/{samples}_insert_size_metrics.pdf", samples=config["samples"])
 
 rule map_to_reference:
     input:
@@ -175,3 +178,23 @@ rule get_wgs_metrics:
             COUNT_UNPAIRED=true \
             USE_FAST_ALGORITHM=true \
             INCLUDE_BQ_HISTOGRAM=true) 2> {log}")
+            
+            
+rule get_insert_size_metrics:
+    input:
+        "results/{samples}/{samples}_recalibrated.bam"
+    output:
+        insert_size_txt = protected("results/{samples}/{samples}_insert_size_metrics.txt"),
+        insert_size_pdf = protected("results/{samples}/{samples}_insert_size_metrics.pdf")
+    params:
+        java=config["java"],
+        picard_jar=config["picard_jar"]
+    log:
+        "logs/insert_size_metrics/{samples}_get_insert_size_metrics.txt"
+    shell:
+        "({params.java} -jar {params.picard_jar} CollectInsertSizeMetrics \
+        I={input} \
+        O={output.insert_size_txt} \
+        H={output.insert_size_pdf} \
+        HISTOGRAM_WIDTH=500 \
+        TMP_DIR=results/tmps/{wildcards.samples}_tmp) 2> {log}"

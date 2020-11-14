@@ -5,7 +5,7 @@
 #Fred Hutchinson Cancer Research Center
 
 __default__:
-    partition: campus
+    partition: campus-new
     time: "24:0:0"
     mem: 4G
     ncpus: 1
@@ -21,7 +21,6 @@ sort_by_coord:
     mem: 8G
 
 mark_dups:
-    partition: largenode
     mem: 72G
     ncpus: 6
 
@@ -38,3 +37,6 @@ rename_index_files:
 #get_alignment_metrics:
 
 #get_wgs_metrics:
+
+#get_insert_size_metrics:
+
